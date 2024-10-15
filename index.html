@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multiple Buzzer App</title>
+</head>
+<body>
+  <h1>Buzzer Game</h1>
+  <button id="buzz">Buzz</button>
+  <h2 id="result"></h2>
+  <button id="reset">Reset</button>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    document.getElementById('buzz').addEventListener('click', () => {
+      socket.emit('buzz');
+    });
+
+    socket.on('winner', (id) => {
+      document.getElementById('result').innerText = `Player ${id} clicked first!`;
+    });
+
+    document.getElementById('reset').addEventListener('click', () => {
+      socket.emit('reset');
+      document.getElementById('result').innerText = '';
+    });
+
+    socket.on('reset', () => {
+      document.getElementById('result').innerText = '';
+    });
+  </script>
+</body>
+</html>
